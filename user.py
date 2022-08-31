@@ -7,7 +7,7 @@ import os
 from os import path
 from pywinauto import Desktop
 import re
-#import psutil
+# import psutil
 
 panel = Application(backend='uia')
 panel2 = Desktop(backend='uia')
@@ -68,7 +68,7 @@ def firefox_config():
 
 
 def reader_config():
-    panel.start('C:\\Program Files (x86)\\Adobe\\Acrobat Reader DC\\Reader\\AcroRd32.exe')
+    send_keys('{RWIN} acrobat {ENTER}')
     panel.connect(path='C:\\Program Files (x86)\\Adobe\\Acrobat Reader DC\\Reader\\AcroRd32.exe')
     # # panel.start("C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
     # # panel.connect(path="C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
@@ -97,96 +97,99 @@ def reader_config():
     wlasciwosci.child_window(title="OK", control_type="Button").click()
     panel.kill()
 
-# #----------OUTLOOK-----------#
-# panel.start('C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE')
-# panel.connect(path='C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE')
-# otwieranie = panel.window(title_re='Otwieranie')
-# otwieranie.wait('enabled')
-# panel.connect(title='Outlook — Zapraszamy!')
-# office = panel.window(title='Outlook — Zapraszamy!')
-# office.wait('visible')
-# office_tekst =office.child_window(title_re="Zainstalowane są następujące aplikacje", control_type="Text").texts()
-# print(office_tekst[0][-4:])
-# wersja = office_tekst[0][-4:]
-# office.child_window(title_re="Zaakceptuj i uruchom", control_type="Button").click()
-# panel.connect(title_re='Outlook ')
-# outlook = panel.window(title_re='Outlook ')
-# outlook.wait('enabled')
-# send_keys('^c')
-# outlook.child_window(title="Połącz", control_type="Button").click()
-# outlook.dump_tree()
-# outlook.child_window(title="Ukończono konfigurację konta", control_type="Text").wait('enabled')
-# outlook.child_window(title_re="Skonfiguruj też aplikację ", control_type="CheckBox").click()
-# outlook.child_window(title="OK", control_type="Button").click()
-#
-# #----- TO DO TRY EXCEPTA------#
-# #for proc in psutil.process_iter():
-#     #if proc.name() == 'Microsoft Edge':
-#         #proc.kill()
-#
-# panel.connect(title_re='Inbox ')
-# outlook_wlasciwy = panel.window(title_re='Inbox')
-# outlook_wlasciwy.wait('enabled')
-# outlook_wlasciwy.child_window(title="Zamknij", control_type="Button", found_index=0).click()
-#
-# #----------------------------#
-# #------chmura------------#
-# #windows = Desktop(backend="uia").windows()
-# #print([w for w in windows])
-# panel.connect(class_name='Shell_TrayWnd')
-# pasek = panel.window(class_name='Shell_TrayWnd')
-# badziew = pasek.child_window(title="Przycisk powiadomień", auto_id="1502", control_type="Button")
-# badziew.click()
-# panel.connect(class_name='NotifyIconOverflowWindow', timeout=100)
-# rozwijane = panel.window(class_name='NotifyIconOverflowWindow')
-# rozwijane.wait('enabled')
-# rozwijane.child_window(title_re="OneDrive", control_type="Button").click()
-# panel.connect(title='Microsoft OneDrive')
-# drive = panel.window(title='Microsoft OneDrive')
-# drive.wait('enabled')
-# drive.child_window(title="Zaloguj się", control_type="Button").click()
-# panel.connect(title='Microsoft OneDrive')
-# onedrive = panel.window(title='Microsoft OneDrive')
-# onedrive.wait('enabled')
-# send_keys('^v')
-# onedrive.child_window(title="Zaloguj się", control_type="Button").click()
-# panel.connect(title='Microsoft OneDrive')
-# konf = panel.window(title='Microsoft OneDrive')
-# konf.wait('enabled')
-# konf.child_window(title="Twój folder usługi OneDrive", control_type="Text").wait('visible')
-# konf.child_window(title="Twój folder usługi OneDrive", control_type="Text").wait('enabled')
-# konf.child_window(title="Dalej", control_type="Button").click()
-# konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('visible')
-# konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('enabled')
-# konf.child_window(title="Kontynuuj", control_type="Button").click()
-# konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('visible')
-# konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('enabled')
-# konf.child_window(title="Dalej", control_type="Button").click()
-# konf.child_window(title="Udostępnianie plików i folderów", control_type="Text").wait('visible')
-# konf.child_window(title="Udostępnianie plików i folderów", control_type="Text").wait('enabled')
-# konf.child_window(title="Dalej", control_type="Button").click()
-# konf.child_window(title="Wszystkie pliki są gotowe do użycia i dostępne na żądanie", control_type="Text").wait('visible')
-# konf.child_window(title="Wszystkie pliki są gotowe do użycia i dostępne na żądanie", control_type="Text").wait('enabled')
-# konf.child_window(title="Dalej", control_type="Button").click()
-# konf.child_window(title="Pobieranie aplikacji mobilnej ", control_type="Text").wait('visible')
-# konf.child_window(title="Pobieranie aplikacji mobilnej ", control_type="Text").wait('enabled')
-# konf.child_window(title="Później", control_type="Button").click()
-# konf.child_window(title="Usługa OneDrive jest gotowa", control_type="Text").wait('visible')
-# konf.child_window(title="Usługa OneDrive jest gotowa", control_type="Text").wait('enabled')
-# konf.child_window(title="Otwórz mój folder usługi OneDrive", control_type="Button").click()
-# panel.connect(title='OneDrive - Gdańskie Centrum Informatyczne')
-# folderek = panel.window(title='OneDrive - Gdańskie Centrum Informatyczne')
-# folderek.wait('enabled')
-# folderek.child_window(title="Zamknij", control_type="Button").click()
+
+def outlook_config():
+    send_keys('{RWIN} outlook {ENTER}')
+    panel.connect(path='C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE')
+    otwieranie = panel.window(title_re='Otwieranie')
+    otwieranie.wait('enabled')
+    panel.connect(title='Outlook — Zapraszamy!')
+    office = panel.window(title='Outlook — Zapraszamy!')
+    office.wait('visible')
+    office_tekst =office.child_window(title_re="Zainstalowane są następujące aplikacje", control_type="Text").texts()
+    print(office_tekst[0][-4:])
+    wersja = office_tekst[0][-4:]
+    office.child_window(title_re="Zaakceptuj i uruchom", control_type="Button").click()
+    panel.connect(title_re='Outlook ')
+    outlook = panel.window(title_re='Outlook ')
+    outlook.wait('enabled')
+    send_keys('^c')
+    outlook.child_window(title="Połącz", control_type="Button").click()
+    outlook.dump_tree()
+    outlook.child_window(title="Ukończono konfigurację konta", control_type="Text").wait('enabled')
+    outlook.child_window(title_re="Skonfiguruj też aplikację ", control_type="CheckBox").click()
+    outlook.child_window(title="OK", control_type="Button").click()
+
+    #----- TO DO TRY EXCEPTA------#
+    #for proc in psutil.process_iter():
+        #if proc.name() == 'Microsoft Edge':
+            #proc.kill()
+
+    panel.connect(title_re='Inbox ')
+    outlook_wlasciwy = panel.window(title_re='Inbox')
+    outlook_wlasciwy.wait('enabled')
+    outlook_wlasciwy.child_window(title="Zamknij", control_type="Button", found_index=0).click()
+
+
+def cloud_config():
+    #windows = Desktop(backend="uia").windows()
+    #print([w for w in windows])
+    panel.connect(class_name='Shell_TrayWnd')
+    pasek = panel.window(class_name='Shell_TrayWnd')
+    badziew = pasek.child_window(title="Przycisk powiadomień", auto_id="1502", control_type="Button")
+    badziew.click()
+    panel.connect(class_name='NotifyIconOverflowWindow', timeout=100)
+    rozwijane = panel.window(class_name='NotifyIconOverflowWindow')
+    rozwijane.wait('enabled')
+    rozwijane.child_window(title_re="OneDrive", control_type="Button").click()
+    panel.connect(title='Microsoft OneDrive')
+    drive = panel.window(title='Microsoft OneDrive')
+    drive.wait('enabled')
+    drive.child_window(title="Zaloguj się", control_type="Button").click()
+    panel.connect(title='Microsoft OneDrive')
+    onedrive = panel.window(title='Microsoft OneDrive')
+    onedrive.wait('enabled')
+    send_keys('^v')
+    onedrive.child_window(title="Zaloguj się", control_type="Button").click()
+    panel.connect(title='Microsoft OneDrive')
+    konf = panel.window(title='Microsoft OneDrive')
+    konf.wait('enabled')
+    konf.child_window(title="Twój folder usługi OneDrive", control_type="Text").wait('visible')
+    konf.child_window(title="Twój folder usługi OneDrive", control_type="Text").wait('enabled')
+    konf.child_window(title="Dalej", control_type="Button").click()
+    konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('visible')
+    konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('enabled')
+    konf.child_window(title="Kontynuuj", control_type="Button").click()
+    konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('visible')
+    konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('enabled')
+    konf.child_window(title="Dalej", control_type="Button").click()
+    konf.child_window(title="Udostępnianie plików i folderów", control_type="Text").wait('visible')
+    konf.child_window(title="Udostępnianie plików i folderów", control_type="Text").wait('enabled')
+    konf.child_window(title="Dalej", control_type="Button").click()
+    konf.child_window(title="Wszystkie pliki są gotowe do użycia i dostępne na żądanie", control_type="Text").wait('visible')
+    konf.child_window(title="Wszystkie pliki są gotowe do użycia i dostępne na żądanie", control_type="Text").wait('enabled')
+    konf.child_window(title="Dalej", control_type="Button").click()
+    konf.child_window(title="Pobieranie aplikacji mobilnej ", control_type="Text").wait('visible')
+    konf.child_window(title="Pobieranie aplikacji mobilnej ", control_type="Text").wait('enabled')
+    konf.child_window(title="Później", control_type="Button").click()
+    konf.child_window(title="Usługa OneDrive jest gotowa", control_type="Text").wait('visible')
+    konf.child_window(title="Usługa OneDrive jest gotowa", control_type="Text").wait('enabled')
+    konf.child_window(title="Otwórz mój folder usługi OneDrive", control_type="Button").click()
+    panel.connect(title='OneDrive - Gdańskie Centrum Informatyczne')
+    folderek = panel.window(title='OneDrive - Gdańskie Centrum Informatyczne')
+    folderek.wait('enabled')
+    folderek.child_window(title="Zamknij", control_type="Button").click()
+
 
 # set_default_apps([
 #     {'setting_title': 'Poczta e-mail,', 'app_title': 'Outlook'},
 #     {'setting_title': 'Przeglądarka sieci Web,', 'app_title': 'Firefox'}
 # ])
 
-
+# outlook_config()
 # firefox_config()
 # reader_config()
+# cloud_config()
 
 # taskbar_control(['paint'])
 # taskbar_control(['paint'], True)
