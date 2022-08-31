@@ -181,17 +181,17 @@ def cloud_config():
     folderek.child_window(title="Zamknij", control_type="Button").click()
 
 
-# set_default_apps([
-#     {'setting_title': 'Poczta e-mail,', 'app_title': 'Outlook'},
-#     {'setting_title': 'Przeglądarka sieci Web,', 'app_title': 'Firefox'}
-# ])
+set_default_apps([
+    {'setting_title': 'Poczta e-mail,', 'app_title': 'Outlook'},
+    {'setting_title': 'Przeglądarka sieci Web,', 'app_title': 'Firefox'}
+])
 
-# outlook_config()
-# firefox_config()
-# reader_config()
-# cloud_config()
+outlook_config()
+firefox_config()
+reader_config()
+cloud_config()
 
-# taskbar_control(['paint'])
-# taskbar_control(['paint'], True)
+taskbar_control(['outlook', 'firefox', ])
+taskbar_control(['poczta', 'store', 'vantage'], True)
 
 
