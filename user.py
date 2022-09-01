@@ -27,7 +27,6 @@ def taskbar_control(menu_items, unpin=False):
             if item.texts()[0] == button_text:
                 send_keys('{ENTER}')
                 break
-            print('dupa')
 
 
 def default_apps(setting_title, app_title, ustawienia):
@@ -54,7 +53,14 @@ def set_default_apps(settings):
 
 def firefox_config():
     send_keys('{RWIN} firefox {ENTER}')
-    panel.connect(path='C:\\Program Files\\Mozilla Firefox\\firefox.exe')
+    try:
+        panel.connect(title_re='Witamy w przegl')
+        przegladarka=panel.window(title_re='Witamy w przegl')
+        przegladarka.wait('enabled')
+    except:
+        panel.connect(title='Mozilla Firefox')
+        przegladarka2=panel.window(title='Mozilla Firefox')
+        przegladarka2.wait('enabled')
     send_keys('^t')
     send_keys('about+:preferences {ENTER}')
     firefox = panel.window(title_re='Ustawienia')
@@ -64,15 +70,21 @@ def firefox_config():
     if zrodlo[0].find('Firefox') != -1:
         firefox.window(title="Dokument PDF Otwórz w programie Firefox", control_type="ListItem").select()
         send_keys('{TAB} {DOWN 3}')
-    firefox.child_window(title="Zamknij", control_type="Button").click()
+    try:
+        firefox.child_window(title="Zamknij", control_type="Button").click()
+    except:
+        firefox.child_window(title="Zamknij", control_type="Button", found_index=0).click()
+        
 
 
 def reader_config():
     send_keys('{RWIN} acrobat {ENTER}')
     panel.connect(path='C:\\Program Files (x86)\\Adobe\\Acrobat Reader DC\\Reader\\AcroRd32.exe')
-    # # panel.start("C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
-    # # panel.connect(path="C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
+    # panel.start("C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
+    # panel.connect(path="C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
+    sleep(2)
     reader = panel.window(title_re='Adobe Acrobat Reader ')
+    sleep(1)
     umowa = reader.child_window(title_re='Adobe Acrobat Reader DC - ')
     umowa.wait('enabled')
     umowa.child_window(title="Akceptuj", control_type="Button").click()
@@ -82,6 +94,7 @@ def reader_config():
     plik_testowy = panel.window(title_re='nowy_')
     plik_testowy.child_window(title="tester", control_type="ListItem").select()
     send_keys('{VK_APPS} {UP} {ENTER}')
+    sleep(1)
     panel.connect(title_re = 'Właściwości:')
     wlasciwosci = panel.window(title_re = 'Właściwości:')
     wlasciwosci.wait('enabled')
@@ -90,12 +103,14 @@ def reader_config():
     #print([w for w in windows])
     okno_latane = panel2.window(best_match='Jak chcesz od teraz otwierać pliki')
     okno_latane.wait('enabled')
-    okno_latane.child_window(title="Adobe Acrobat DC", control_type="ListItem").select()
+    okno_latane.child_window(title_re="Adobe Acrobat", control_type="ListItem").select()
     send_keys('{ENTER}')
+    sleep(1)
     wlasciwosci.wait('enabled')
     wlasciwosci.child_window(title="Zastosuj", control_type="Button").click()
     wlasciwosci.child_window(title="OK", control_type="Button").click()
     panel.kill()
+    sleep(1)
 
 
 def outlook_config():
@@ -110,16 +125,16 @@ def outlook_config():
     print(office_tekst[0][-4:])
     wersja = office_tekst[0][-4:]
     office.child_window(title_re="Zaakceptuj i uruchom", control_type="Button").click()
-    panel.connect(title_re='Outlook ')
-    outlook = panel.window(title_re='Outlook ')
+    sleep(1)
+    panel.connect(title_re='Outlook')
+    outlook = panel.window(title_re='Outlook')
     outlook.wait('enabled')
     send_keys('^c')
     outlook.child_window(title="Połącz", control_type="Button").click()
-    outlook.dump_tree()
     outlook.child_window(title="Ukończono konfigurację konta", control_type="Text").wait('enabled')
     outlook.child_window(title_re="Skonfiguruj też aplikację ", control_type="CheckBox").click()
     outlook.child_window(title="OK", control_type="Button").click()
-
+    sleep(9)
     #----- TO DO TRY EXCEPTA------#
     #for proc in psutil.process_iter():
         #if proc.name() == 'Microsoft Edge':
@@ -129,11 +144,12 @@ def outlook_config():
     outlook_wlasciwy = panel.window(title_re='Inbox')
     outlook_wlasciwy.wait('enabled')
     outlook_wlasciwy.child_window(title="Zamknij", control_type="Button", found_index=0).click()
+    sleep(1)
 
 
 def cloud_config():
-    #windows = Desktop(backend="uia").windows()
-    #print([w for w in windows])
+    ##windows = Desktop(backend="uia").windows()
+    ##print([w for w in windows])
     panel.connect(class_name='Shell_TrayWnd')
     pasek = panel.window(class_name='Shell_TrayWnd')
     badziew = pasek.child_window(title="Przycisk powiadomień", auto_id="1502", control_type="Button")
@@ -142,6 +158,7 @@ def cloud_config():
     rozwijane = panel.window(class_name='NotifyIconOverflowWindow')
     rozwijane.wait('enabled')
     rozwijane.child_window(title_re="OneDrive", control_type="Button").click()
+    sleep(1)
     panel.connect(title='Microsoft OneDrive')
     drive = panel.window(title='Microsoft OneDrive')
     drive.wait('enabled')
@@ -151,15 +168,17 @@ def cloud_config():
     onedrive.wait('enabled')
     send_keys('^v')
     onedrive.child_window(title="Zaloguj się", control_type="Button").click()
+    sleep(3)
     panel.connect(title='Microsoft OneDrive')
     konf = panel.window(title='Microsoft OneDrive')
-    konf.wait('enabled')
+    konf.wait('enabled') 
     konf.child_window(title="Twój folder usługi OneDrive", control_type="Text").wait('visible')
     konf.child_window(title="Twój folder usługi OneDrive", control_type="Text").wait('enabled')
     konf.child_window(title="Dalej", control_type="Button").click()
     konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('visible')
     konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('enabled')
     konf.child_window(title="Kontynuuj", control_type="Button").click()
+    sleep(2)
     konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('visible')
     konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('enabled')
     konf.child_window(title="Dalej", control_type="Button").click()
@@ -175,19 +194,20 @@ def cloud_config():
     konf.child_window(title="Usługa OneDrive jest gotowa", control_type="Text").wait('visible')
     konf.child_window(title="Usługa OneDrive jest gotowa", control_type="Text").wait('enabled')
     konf.child_window(title="Otwórz mój folder usługi OneDrive", control_type="Button").click()
+    sleep(1)
     panel.connect(title='OneDrive - Gdańskie Centrum Informatyczne')
     folderek = panel.window(title='OneDrive - Gdańskie Centrum Informatyczne')
     folderek.wait('enabled')
     folderek.child_window(title="Zamknij", control_type="Button").click()
 
 
-set_default_apps([
-    {'setting_title': 'Poczta e-mail,', 'app_title': 'Outlook'},
-    {'setting_title': 'Przeglądarka sieci Web,', 'app_title': 'Firefox'}
-])
+#set_default_apps([
+    #{'setting_title': 'Poczta e-mail,', 'app_title': 'Outlook'},
+    #{'setting_title': 'Przeglądarka sieci Web,', 'app_title': 'Firefox'}
+#])
 
-outlook_config()
-firefox_config()
+#outlook_config()
+#firefox_config()
 reader_config()
 cloud_config()
 
