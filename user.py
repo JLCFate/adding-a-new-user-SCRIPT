@@ -54,18 +54,22 @@ def set_default_apps(settings):
 
 def firefox_config():
     send_keys('{RWIN} firefox {ENTER}')
+    sleep(1)
     try:
-        panel.connect(title_re='Witamy w przegl')
+        try:
+            panel.connect(title_re='Witamy w przegl', timeout=15)
+        except:
+            panel.connect(path='C:\\Program Files\\Mozilla Firefox\\firefox.exe', timeout=15)
         przegladarka = panel.window(title_re='Witamy w przegl')
-        przegladarka.wait('enabled')
+        przegladarka.wait('enabled', timeout=20)
     except:
-        panel.connect(title='Mozilla Firefox')
+        panel.connect(title='Mozilla Firefox', timeout=20)
         przegladarka2 = panel.window(title='Mozilla Firefox')
-        przegladarka2.wait('enabled')
+        przegladarka2.wait('enabled', timeout=20)
     send_keys('^t')
     send_keys('about+:preferences {ENTER}')
     firefox = panel.window(title_re='Ustawienia')
-    firefox.wait('enabled')
+    firefox.wait('enabled', timeout=20)
     send_keys('aplikacje')
     zrodlo = firefox.window(title_re="Dokument PDF", control_type="ListItem").wrapper_object().texts()
     if zrodlo[0].find('Firefox') != -1:
@@ -79,11 +83,13 @@ def firefox_config():
 
 def reader_config():
     send_keys('{RWIN} acrobat {ENTER}')
-    panel.connect(path='C:\\Program Files (x86)\\Adobe\\Acrobat Reader DC\\Reader\\AcroRd32.exe', timeout=20)
+    panel.connect(title_re='Adobre Acrobat Reader DC', timeout=20)
     # panel.start("C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
     # panel.connect(path="C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe")
     reader = panel.window(title_re='Adobe Acrobat Reader ')
-    umowa = reader.child_window(title_re='Adobe Acrobat Reader DC - ')
+    sleep(2)
+    panel.connect(title='Adobe Acrobat Reader DC - Umowa licencyjna dystrybucji do użytku na komputerach osobistych', timeout=15)
+    umowa = reader.child_window(title='Adobe Acrobat Reader DC - Umowa licencyjna dystrybucji do użytku na komputerach osobistych')
     umowa.wait('enabled', timeout=20)
     umowa.child_window(title="Akceptuj", control_type="Button").click()
     panel.kill()
@@ -138,7 +144,7 @@ def outlook_config():
 
     panel.connect(title_re='Inbox ', timeout=20)
     outlook_wlasciwy = panel.window(title_re='Inbox')
-    outlook_wlasciwy.wait('enabled')
+    outlook_wlasciwy.wait('enabled', timeout=20)
     outlook_wlasciwy.child_window(title="Zamknij", control_type="Button", found_index=0).click()
     sleep(1)
 
@@ -146,13 +152,14 @@ def outlook_config():
 def cloud_config():
     ##windows = Desktop(backend="uia").windows()
     ##print([w for w in windows])
-    panel.connect(class_name='Shell_TrayWnd')
+    sleep(1)
+    panel.connect(class_name='Shell_TrayWnd', timeout=100)
     pasek = panel.window(class_name='Shell_TrayWnd')
     badziew = pasek.child_window(title="Przycisk powiadomień", auto_id="1502", control_type="Button")
     badziew.click()
     panel.connect(class_name='NotifyIconOverflowWindow', timeout=100)
     rozwijane = panel.window(class_name='NotifyIconOverflowWindow')
-    rozwijane.wait('enabled')
+    rozwijane.wait('enabled', timeout=20)
     rozwijane.child_window(title_re="OneDrive", control_type="Button").click()
     panel.connect(title='Microsoft OneDrive', timeout=20)
     drive = panel.window(title='Microsoft OneDrive')
@@ -164,6 +171,7 @@ def cloud_config():
     send_keys('^v')
     onedrive.child_window(title="Zaloguj się", control_type="Button").click()
     panel.connect(title='Microsoft OneDrive', timeout=20)
+    sleep(3)
     konf = panel.window(title='Microsoft OneDrive')
     konf.wait('enabled', timeout=20)
     konf.child_window(title="Twój folder usługi OneDrive", control_type="Text").wait('visible')
@@ -172,7 +180,7 @@ def cloud_config():
     konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('visible')
     konf.child_window(title="Utwórz kopię zapasową swoich folderów", control_type="Text").wait('enabled')
     konf.child_window(title="Kontynuuj", control_type="Button").click()
-    sleep(2)
+    sleep(3)
     konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('visible', timeout=20)
     konf.child_window(title="Poznaj usługę OneDrive", control_type="Text").wait('enabled', timeout=20)
     konf.child_window(title="Dalej", control_type="Button").click()
@@ -235,7 +243,7 @@ def main():
 
     outlook_config()
     firefox_config()
-    reader_config()
+    #reader_config()
     cloud_config()
 
     taskbar_control(['outlook', 'firefox'])
